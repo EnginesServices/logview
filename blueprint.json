@@ -12,11 +12,126 @@
       "version": {
         "major": 0,
         "minor": 0,
-        "level": "alpha",
+        "level": "beta",
         "patch": 0
       }
-    }
+    },
+    "software": {
+      "display": {
+        "title": "Log view",
+        "label": "logview"
+      }
+    },
+    "timestamp": "2017-11-19T13:24:39+11:00"
   },
   "software": {
+    "base": {
+      "name": "logview",
+      "accepts": [
+        "ManagedService",
+        "ManagedEngine"
+      ],
+      "publisher_namespace": "EnginesSystem",
+      "type_path": "logview",
+      "service_handle_field": "log_name",
+      "parent_image": "engines/servicebase",
+      "run_as_user": "www-data",
+      "deployment_type": "web",
+      "http_protocol": "https_only",
+      "memory": {
+        "required": 48,
+        "recommended": 48
+      },
+      "attach_post_build": true
+    },
+    "scripts": {
+      "install": {
+        "language": "sh",
+        "content": "#!/bin/bash\r\n\r\nmkdir /home/saved &&\\\r\n\tchown 22027 /home/saved /home/app/config.user.php &&\\\r\n\tusermod -G utmp -a www-data &&\\\r\n\tusermod -G syslog -a www-data &&\\\r\n\tusermod -G adm -a www-data"
+      }
+    },
+    "system_packages": [
+      {
+        "package": "apache2"
+      },
+      {
+        "package": "libapache2-mod-php"
+      },
+      {
+        "package": "php-gettext"
+      },
+      {
+        "package": "php-mbstring"
+      },
+      {
+        "package": "php-mysql"
+      },
+      {
+        "package": "php-mcrypt"
+      },
+      {
+        "package": "php-gd"
+      },
+      {
+        "package": "php-apcu"
+      },
+      {
+        "package": "php-dev"
+      }
+    ],
+    "installed_packages": [
+      {
+        "name": "PimpMyLog",
+        "destination": "./",
+        "extraction_command": "git",
+        "path_to_extracted": "PimpMyLog"
+      }
+    ],
+    "template_files": [
+      {
+        "path": "/home/app/config.user.php",
+        "language": "php",
+        "content": "<?php\r\n/*! pimpmylog - 1.7.10 - 65d6f147e509133fc5f09642ba82b149ef750ef2*/\r\n/*\r\n * pimpmylog\r\n * http://pimpmylog.com\r\n *\r\n * Copyright (c) 2015 Potsky, contributors\r\n * Licensed under the GPLv3 license.\r\n */\r\n?>\r\n<?php if(realpath(__FILE__)===realpath($_SERVER[\"SCRIPT_FILENAME\"])){header($_SERVER['SERVER_PROTOCOL'].' 404 Not Found');die();}?>\r\n{\r\n        \"globals\": {\r\n                \"_remove_me_to_set_AUTH_LOG_FILE_COUNT\"         : 100,\r\n                \"_remove_me_to_set_AUTO_UPGRADE\"                : false,\r\n                \"_remove_me_to_set_CHECK_UPGRADE\"               : true,\r\n                \"_remove_me_to_set_EXPORT\"                      : true,\r\n                \"_remove_me_to_set_FILE_SELECTOR\"               : \"bs\",\r\n                \"_remove_me_to_set_FOOTER\"                      : \"&copy; <a href=\\\"http:\\/\\/www.potsky.com\\\" target=\\\"doc\\\">Potsky<\\/a> 2007-' . YEAR . ' - <a href=\\\"http:\\/\\/pimpmylog.com\\\" target=\\\"doc\\\">Pimp my Log<\\/a>\",\r\n                \"_remove_me_to_set_FORGOTTEN_YOUR_PASSWORD_URL\" : \"http:\\/\\/support.pimpmylog.com\\/kb\\/misc\\/forgotten-your-password\",\r\n                \"_remove_me_to_set_GEOIP_URL\"                   : \"http:\\/\\/www.geoiptool.com\\/en\\/?IP=%p\",\r\n                \"_remove_me_to_set_GOOGLE_ANALYTICS\"            : \"UA-XXXXX-X\",\r\n                \"_remove_me_to_set_HELP_URL\"                    : \"http:\\/\\/pimpmylog.com\",\r\n                \"_remove_me_to_set_LOCALE\"                      : \"gb_GB\",\r\n                \"_remove_me_to_set_LOGS_MAX\"                    : 50,\r\n                \"_remove_me_to_set_LOGS_REFRESH\"                : 0,\r\n                \"_remove_me_to_set_MAX_SEARCH_LOG_TIME\"         : 5,\r\n                \"_remove_me_to_set_NAV_TITLE\"                   : \"\",\r\n                \"_remove_me_to_set_NOTIFICATION\"                : true,\r\n                \"_remove_me_to_set_NOTIFICATION_TITLE\"          : \"New logs [%f]\",\r\n                \"_remove_me_to_set_PIMPMYLOG_ISSUE_LINK\"        : \"https:\\/\\/github.com\\/potsky\\/PimpMyLog\\/issues\\/\",\r\n                \"_remove_me_to_set_PIMPMYLOG_VERSION_URL\"       : \"http:\\/\\/demo.pimpmylog.com\\/version.js\",\r\n                \"_remove_me_to_set_PULL_TO_REFRESH\"             : true,\r\n                \"_remove_me_to_set_SORT_LOG_FILES\"              : \"default\",\r\n                \"_remove_me_to_set_TAG_DISPLAY_LOG_FILES_COUNT\" : true,\r\n                \"_remove_me_to_set_TAG_NOT_TAGGED_FILES_ON_TOP\" : true,\r\n                \"_remove_me_to_set_TAG_SORT_TAG\"                : \"default | display-asc | display-insensitive | display-desc | display-insensitive-desc\",\r\n                \"_remove_me_to_set_TITLE\"                       : \"Pimp my Log\",\r\n                \"_remove_me_to_set_TITLE_FILE\"                  : \"Pimp my Log [%f]\",\r\n                \"_remove_me_to_set_UPGRADE_MANUALLY_URL\"        : \"http:\\/\\/pimpmylog.com\\/getting-started\\/#update\",\r\n                \"_remove_me_to_set_USER_CONFIGURATION_DIR\"      : \"config.user.d\",\r\n                \"_remove_me_to_set_USER_TIME_ZONE\"              : \"Europe\\/Paris\"\r\n        },\r\n\r\n        \"badges\": {\r\n                \"severity\": {\r\n                        \"debug\"       : \"success\",\r\n                      \"info\"        : \"success\",\r\n                        \"notice\"      : \"default\",\r\n                        \"Notice\"      : \"info\",\r\n                        \"warn\"        : \"warning\",\r\n                        \"error\"       : \"danger\",\r\n                        \"crit\"        : \"danger\",\r\n                        \"alert\"       : \"danger\",\r\n                        \"emerg\"       : \"danger\",\r\n                        \"Notice\"      : \"info\",\r\n                        \"Fatal error\" : \"danger\",\r\n                        \"Parse error\" : \"danger\",\r\n                        \"Warning\"     : \"warning\"\r\n                },\r\n                \"http\": {\r\n                        \"1\" : \"info\",\r\n                        \"2\" : \"success\",\r\n                        \"3\" : \"default\",\r\n                        \"4\" : \"warning\",\r\n                        \"5\" : \"danger\"\r\n                }\r\n        },\r\n\r\n        \"files\": {\r\n                \"apache1\": {\r\n                        \"display\"   : \"Apache Error #1\",\r\n                        \"path\"      : \"\\/var\\/log\\/engines\\/services\\/mgmt/apache2/error_log\",\r\n                        \"refresh\"   : 5,\r\n                        \"max\"       : 10,\r\n                        \"notify\"    : true,\r\n                        \"multiline\" : \"\",\r\n                        \"format\"    : {\r\n                                \"regex\"        : \"|^\\\\[(.*)\\\\] \\\\[(.*)\\\\] (\\\\[client (.*)\\\\] )*((?!\\\\[client ).*)(, referer: (.*))*$|U\",\r\n                                \"export_title\" : \"Log\",\r\n                                \"match\"        : {\r\n                                        \"Date\"     : 1,\r\n                                        \"IP\"       : 4,\r\n                                        \"Log\"      : 5,\r\n                                        \"Severity\" : 2,\r\n                                        \"Referer\"  : 7\r\n                                },\r\n                                \"types\": {\r\n                                        \"Date\"     : \"date:H:i:s\",\r\n                                        \"IP\"       : \"ip:http\",\r\n                                        \"Log\"      : \"pre\",\r\n                                        \"Severity\" : \"badge:severity\",\r\n                                        \"Referer\"  : \"link\"\r\n                                                },\r\n                                \"exclude\": {\r\n                                        \"Log\": [\"\\/PHP Stack trace:\\/\", \"\\/PHP *[0-9]*\\\\. \\/\"]\r\n                                }\r\n                        }\r\n                },\r\n                \"apache2\": {\r\n                        \"display\"   : \"Apache Access #2\",\r\n                        \"path\"      : \"\\/var\\/log\\/engines\\/services\\/mgmt/apache2/access_log\",\r\n                        \"refresh\"   : 0,\r\n                        \"max\"       : 10,\r\n                        \"notify\"    : false,\r\n                        \"multiline\" : \"\",\r\n                        \"format\"    : {\r\n                                \"regex\"        : \" |^(.*) (.*) (.*) \\\\[(.*)\\\\] \\\"(.*) (.*) (.*)\\\" ([0-9]*) (.*) \\\"(.*)\\\" \\\"(.*)\\\"( [0-9]*\\/([0-9]*))*$|U\",\r\n                                \"export_title\" : \"URL\",\r\n                                \"match\"        : {\r\n                                        \"Date\"    : 4,\r\n                                        \"IP\"      : 1,\r\n                                        \"CMD\"     : 5,\r\n                                        \"URL\"     : 6,\r\n                                        \"Code\"    : 8,\r\n                                        \"Size\"    : 9,\r\n                                        \"Referer\" : 10,\r\n                                        \"UA\"      : 11,\r\n                                        \"User\"    : 3,\r\n                                        \"\\u03bcs\" : 13\r\n                                },\r\n                                \"types\": {\r\n                                        \"Date\"    : \"date:H:i:s\",\r\n                                        \"IP\"      : \"ip:geo\",\r\n                                        \"URL\"     : \"txt\",\r\n                                        \"Code\"    : \"badge:http\",\r\n                                        \"Size\"    : \"numeral:0b\",\r\n                                        \"Referer\" : \"link\",\r\n                                        \"UA\"      : \"ua:{os.name} {os.version} | {browser.name} {browser.version}\\/100\",\r\n                                        \"\\u03bcs\" : \"numeral:0,0\"\r\n                                },\r\n                                \"exclude\": {\r\n                                        \"URL\": [\"\\/favicon.ico\\/\", \"\\/\\\\.pml\\\\.php.*$\\/\"],\r\n                                        \"CMD\": [\"\\/OPTIONS\\/\"]\r\n                                }\r\n                        }\r\n                }\r\n        }\r\n}\r\n                        "
+      }
+    ],
+    "consumer_params": [
+      {
+        "name": "log_name",
+        "mandatory": true,
+        "immutable": true,
+        "input": {
+          "type": "string",
+          "label": "Log name"
+        }
+      },
+      {
+        "name": "log_file_path",
+        "mandatory": true,
+        "input": {
+          "type": "string",
+          "label": "Log file path"
+        }
+      },
+      {
+        "name": "log_type",
+        "value": "raw",
+        "mandatory": true,
+        "input": {
+          "type": "select",
+          "label": "Log file format",
+          "collection": {
+            "items": {
+              "nginx": "Nginx",
+              "apache": "Apache",
+              "syslog": "syslog",
+              "nginx_error_log": "Nginx error log",
+              "apache_error_log": "Apache error log",
+              "raw_dated": "Dated raw logs",
+              "raw": "Raw logs"
+            }
+          }
+        }
+      }
+    ]
   }
 }
